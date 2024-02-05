@@ -37,6 +37,7 @@ function stringifyWithoutCycles(obj) {
 	var result = detect(obj)
 	return JSON.stringify(result, null, 2)
 }
+
 export const createMemo = () => {
 	const cache = Object.create(null)
 
