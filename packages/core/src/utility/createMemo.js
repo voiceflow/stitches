@@ -41,8 +41,6 @@ export const createMemo = () => {
 	const cache = Object.create(null)
 
 	return (value, apply, ...args) => {
-		console.log('value', value)
-
 		const vjson = stringify(value)
 
 		return vjson in cache ? cache[vjson] : (cache[vjson] = apply(value, ...args))
