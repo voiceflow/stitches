@@ -1,7 +1,6 @@
-const stringifyReplacer = (name, data) => (typeof data === 'function' ? { '()': Function.prototype.toString.call(data) } : data)
+import { stringify as stringifyWithoutCircularStructs } from 'flatted'
 
-const stringify = (value) => JSON.stringify(value, stringifyReplacer)
-
+const stringify = (value) => stringifyWithoutCircularStructs(value)
 
 export const createMemo = () => {
 	const cache = Object.create(null)

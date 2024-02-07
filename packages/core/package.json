@@ -78,5 +78,8 @@
     "ts",
     "variable",
     "variables"
-  ]
+  ],
+  "dependencies": {
+    "flatted": "3.2.9"
+  }
 }
