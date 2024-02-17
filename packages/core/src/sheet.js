@@ -136,7 +136,7 @@ export const createSheet = (/** @type {DocumentOrShadowRoot} */ root) => {
 			}
 
 			const createSheet = () => {
-				if (!(root)) {
+				if (!root) {
 					return createCSSMediaRule('', 'text/css')
 				}
 				const styleEl = document.createElement('style')
