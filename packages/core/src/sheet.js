@@ -56,9 +56,7 @@ export const createSheet = (/** @type {DocumentOrShadowRoot} */ root) => {
 			.join('')
 	}
 
-	const reset = (target = root) => {
-		// console.log('reset', target, root)
-
+	const reset = () => {
 		if (groupSheet) {
 			const { rules, sheet } = groupSheet
 
@@ -74,7 +72,7 @@ export const createSheet = (/** @type {DocumentOrShadowRoot} */ root) => {
 		}
 
 		/** @type {StyleSheetList} */
-		const sheets = Object(target).styleSheets || []
+		const sheets = Object(root).styleSheets || []
 
 		// iterate all stylesheets until a hydratable stylesheet is found
 		for (const sheet of sheets) {
@@ -137,47 +135,8 @@ export const createSheet = (/** @type {DocumentOrShadowRoot} */ root) => {
 				})
 			}
 
-			// const createVirtualSheet = (styleEl) => {
-			// 	let sheet
-			// 	let isMounted = false
-			// 	let virtualRules = []
-			// 	let unmountedRules = []
-
-			// 	return {
-			// 		type: 'virtual',
-			// 		get cssRules() {
-			// 			if (isMounted) {
-			// 				return sheet.cssRules
-			// 			} else {
-			// 				return virtualRules
-			// 			}
-			// 		},
-			// 		insertRule(cssText, index) {
-			// 			console.log(sheet, { cssText, index })
-
-			// 			if (sheet) {
-			// 				sheet.insertRule(cssText, index)
-			// 				return
-			// 			}
-
-			// 			unmountedRules.push({ cssText, index })
-			// 			virtualRules.splice(index, 0, createCSSMediaRule(cssText, {
-			// 				import: 3,
-			// 				undefined: 1
-			// 			}[(cssText.toLowerCase().match(/^@([a-z]+)/) || [])[1]] || 4))
-			// 		},
-			// 		mount(rootEl) {
-			// 			isMounted = true
-			// 			sheet = rootEl.appendChild(styleEl).sheet
-			// 			unmountedRules.forEach((rule) => sheet.insertRule(rule.cssText, rule.index))
-			// 			console.log(rootEl, sheet)
-			// 			// groupSheet
-			// 		}
-			// 	}
-			// }
-
 			const createSheet = () => {
-				if (!(target)) {
+				if (!(root)) {
 					return createCSSMediaRule('', 'text/css')
 				}
 				const styleEl = document.createElement('style')
@@ -185,10 +144,7 @@ export const createSheet = (/** @type {DocumentOrShadowRoot} */ root) => {
 				if (nonce) {
 					styleEl.setAttribute('nonce', nonce)
 				}
-				// if (deferMount) {
-				// 	return createVirtualSheet(styleEl)
-				// }
-				return (target.head || target).appendChild(styleEl).sheet
+				return (root.head || root).appendChild(styleEl).sheet
 			}
 
 			groupSheet = {
