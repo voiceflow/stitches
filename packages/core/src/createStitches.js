@@ -50,14 +50,19 @@ export const createStitches = (config, isShadowDom = true) => {
 			},
 			transplant(nextRoot) {
 				const { cssRules, ownerNode } = sheet.sheet
-				const style = nextRoot.appendChild(ownerNode)
 
+				// transplant style element to a new root, CSS rules are not persisted
+				const styleEl = nextRoot.appendChild(ownerNode)
+
+				// copy existing CSS rules, at this point just theme variables and other static styles
 				Array.from(cssRules).forEach((rule, index) => {
-					style.sheet.insertRule(rule.cssText, index)
+					styleEl.sheet.insertRule(rule.cssText, index)
 				})
 
+				// monkey patch rule groups so that component styles are attached correctly when mounting
 				groupNames.forEach((name, index) => {
-					sheet.rules[name].group = style.sheet.cssRules[index * 2 + 1]
+					// every second set of CSS rules corresponds to a named rule group
+					sheet.rules[name].group = styleEl.sheet.cssRules[index * 2 + 1]
 				})
 			},
 			theme: {},
