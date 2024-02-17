@@ -7,7 +7,7 @@ import { createGlobalCssFunction } from './features/globalCss.js'
 import { createKeyframesFunction } from './features/keyframes.js'
 import { createCreateThemeFunction } from './features/createTheme.js'
 
-import { createSheet } from './sheet.js'
+import { createSheet, names as groupNames } from './sheet.js'
 
 const createCssMap = createMemo()
 
@@ -47,6 +47,23 @@ export const createStitches = (config, isShadowDom = true) => {
 			reset() {
 				sheet.reset()
 				returnValue.theme.toString()
+			},
+			transplant(nextRoot) {
+				const { cssRules, ownerNode } = sheet.sheet
+
+				// transplant style element to a new root, CSS rules are not persisted
+				const styleEl = nextRoot.appendChild(ownerNode)
+
+				// copy existing CSS rules, at this point just theme variables and other static styles
+				Array.from(cssRules).forEach((rule, index) => {
+					styleEl.sheet.insertRule(rule.cssText, index)
+				})
+
+				// monkey patch rule groups so that component styles are attached correctly when mounting
+				groupNames.forEach((name, index) => {
+					// every second set of CSS rules corresponds to a named rule group
+					sheet.rules[name].group = styleEl.sheet.cssRules[index * 2 + 1]
+				})
 			},
 			theme: {},
 			sheet,

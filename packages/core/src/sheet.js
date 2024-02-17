@@ -180,13 +180,11 @@ export const createSheet = (/** @type {DocumentOrShadowRoot} */ root) => {
 }
 
 const addApplyToGroup = (/** @type {RuleGroup} */ group) => {
-	const groupingRule = group.group
-
-	let index = groupingRule.cssRules.length
+	let index = group.group.cssRules.length
 
 	group.apply = (cssText) => {
 		try {
-			groupingRule.insertRule(cssText, index)
+			group.group.insertRule(cssText, index)
 
 			++index
 		} catch (__) {
