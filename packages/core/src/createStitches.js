@@ -14,6 +14,8 @@ const createCssMap = createMemo()
 export const createStitches = (config, isShadowDom = true) => {
 	let didRun = false
 
+	// console.log('createStitches', config)
+
 	const instance = createCssMap(config, (initConfig) => {
 		didRun = true
 
@@ -37,15 +39,17 @@ export const createStitches = (config, isShadowDom = true) => {
 		}
 
 		/** Internal stylesheet. */
-		const sheet = createSheet(root)
+		const sheet = createSheet(root, initConfig.deferMount)
+		// console.log(sheet, 'defer', initConfig.deferMount)
 
 		const returnValue = {
 			css: createCssFunction(config, sheet),
 			globalCss: createGlobalCssFunction(config, sheet),
 			keyframes: createKeyframesFunction(config, sheet),
 			createTheme: createCreateThemeFunction(config, sheet, isShadowDom),
-			reset() {
-				sheet.reset()
+			reset(rootEl) {
+				console.log(sheet, rootEl)
+				sheet.reset(rootEl)
 				returnValue.theme.toString()
 			},
 			theme: {},
