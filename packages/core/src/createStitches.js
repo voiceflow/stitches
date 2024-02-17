@@ -37,7 +37,7 @@ export const createStitches = (config, isShadowDom = true) => {
 		}
 
 		/** Internal stylesheet. */
-		const sheet = createSheet(root, initConfig.deferMount)
+		const sheet = createSheet(root)
 
 		const returnValue = {
 			css: createCssFunction(config, sheet),
