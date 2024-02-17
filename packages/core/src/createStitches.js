@@ -7,7 +7,7 @@ import { createGlobalCssFunction } from './features/globalCss.js'
 import { createKeyframesFunction } from './features/keyframes.js'
 import { createCreateThemeFunction } from './features/createTheme.js'
 
-import { createSheet } from './sheet.js'
+import { createSheet, names as groupNames } from './sheet.js'
 
 const createCssMap = createMemo()
 
@@ -47,6 +47,18 @@ export const createStitches = (config, isShadowDom = true) => {
 			reset() {
 				sheet.reset()
 				returnValue.theme.toString()
+			},
+			transplant(nextRoot) {
+				const { cssRules, ownerNode } = sheet.sheet
+				const style = nextRoot.appendChild(ownerNode)
+
+				Array.from(cssRules).forEach((rule, index) => {
+					style.sheet.insertRule(rule.cssText, index)
+				})
+
+				groupNames.forEach((name, index) => {
+					sheet.rules[name].group = style.sheet.cssRules[index * 2 + 1]
+				})
 			},
 			theme: {},
 			sheet,
