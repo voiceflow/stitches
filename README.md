@@ -1,3 +1,6 @@
+> [!CAUTION]
+> Update Nov 24, 2025: This repository has been archived and will not accept further changes.
+
 Update June 19, 2023: Stitches is no longer actively maintained due to changes in the React ecosystem and maintainer availability. You can <a href="https://github.com/stitchesjs/stitches/discussions/1149#discussioncomment-6223090">read more here</a>.
 
 This is a fork so that Voiceflow can maintain it independently
